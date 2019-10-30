@@ -1,0 +1,64 @@
+I am practicing with DEcision Trees and here is the code I am running with the error that came from this:
+
+
+import numpy as np 
+import pandas as pd
+
+#read data
+my_data = pd.read_csv("https://gs.statcounter.com/chart.php?device=Desktop%20%26%20Mobile%20%26%20Tablet%20%26%20Console&device_hidden=desktop%2Bmobile%2Btablet%2Bconsole&multi-device=true&statType_hidden=social_media&region_hidden=ww&granularity=monthly&statType=Social%20Media&region=Worldwide&fromInt=201809&toInt=201909&fromMonthYear=2018-09&toMonthYear=2019-09&csv=1.csv")
+my_data.head(2)
+
+X = my_data[['Pinterest','Twitter','YouTube','Instagram','LinkedIn']].values
+X[0:5]
+
+y = my_data["Facebook"]
+y[0:5]
+
+#setting the decision tree
+from sklearn.model_selection import train_test_split
+#The train_test_split will need the parameters:
+#X, y, test_size=0.3, and random_state=3.
+X_trainset, X_testset, y_trainset, y_testset = train_test_split(X, y, test_size=0.3, random_state=3)
+
+from sklearn.tree import DecisionTreeClassifier
+
+#We will first create an instance of the DecisionTreeClassifier called drugTree
+#Inside of the classifier, specify criterion="entropy" so we can see the information gain of each node
+SNS = DecisionTreeClassifier(criterion="entropy", max_depth = 4)
+SNS # it shows the default parameters
+
+from sklearn import preprocessing
+from sklearn import utils
+SNS.fit(X_trainset,y_trainset)
+
+
+#Error:
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+<ipython-input-37-315f9d1beee3> in <module>
+      2 from sklearn import preprocessing
+      3 from sklearn import utils
+----> 4 SNS.fit(X_trainset,y_trainset)
+
+~/conda/envs/python/lib/python3.6/site-packages/sklearn/tree/tree.py in fit(self, X, y, sample_weight, check_input, X_idx_sorted)
+    799             sample_weight=sample_weight,
+    800             check_input=check_input,
+--> 801             X_idx_sorted=X_idx_sorted)
+    802         return self
+    803 
+
+~/conda/envs/python/lib/python3.6/site-packages/sklearn/tree/tree.py in fit(self, X, y, sample_weight, check_input, X_idx_sorted)
+    138 
+    139         if is_classification:
+--> 140             check_classification_targets(y)
+    141             y = np.copy(y)
+    142 
+
+~/conda/envs/python/lib/python3.6/site-packages/sklearn/utils/multiclass.py in check_classification_targets(y)
+    169     if y_type not in ['binary', 'multiclass', 'multiclass-multioutput',
+    170                       'multilabel-indicator', 'multilabel-sequences']:
+--> 171         raise ValueError("Unknown label type: %r" % y_type)
+    172 
+    173 
+
+ValueError: Unknown label type: 'continuous'
